@@ -1,0 +1,25 @@
+# Ignore node_modules directory
+node_modules
+
+# Ignore environment variable files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore the build directory (if any)
+dist/
+build/
+
+# Ignore any output from testing frameworks like Jest
+coverage/
+
+# Ignore system files (for macOS and Windows)
+.DS_Store
+Thumbs.db
