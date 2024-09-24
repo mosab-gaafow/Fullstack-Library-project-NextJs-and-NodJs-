@@ -1,4 +1,4 @@
-import { prisma } from "../../config.js";
+import { prisma } from "../config/config.js";
 
 export const registerLoan = async (req, res) => {
   try {

@@ -1,17 +1,19 @@
 import express from 'express';
 
 import chalk from 'chalk';
-import userRoutes from './src/routes/userRoutes.js';
-import { port } from './config.js';
-import bookRoutes from './src/routes/bookRoute.js';
-import loanRoutes from './src/routes/loanRoutes.js';
-import cookieParser from 'cookie-parser';
+import userRoutes from './routes/userRoutes.js';
 
+import bookRoutes from './routes/bookRoute.js';
+import loanRoutes from './routes/loanRoutes.js';
+import cookieParser from 'cookie-parser';
+import { port } from './config/config.js';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
-const PORT = port || 6500;
+const PORT = port || 5000;
 
 // routes
 app.use('/api/users', userRoutes)

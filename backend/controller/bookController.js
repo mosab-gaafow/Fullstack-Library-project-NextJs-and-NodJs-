@@ -1,4 +1,4 @@
-import { prisma } from "../../config.js";
+import { prisma } from "../config/config.js";
 
 export const registerBook = async (req, res) => {
 
