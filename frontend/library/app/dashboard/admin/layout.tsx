@@ -1,3 +1,4 @@
+import ToastProvider from "@/app/providers/ToastProvider"
 import AdminSidebar from "../_components/AdminSidebar"
 import Navbar from "../_components/Navbar"
 
@@ -22,7 +23,7 @@ const AdminLayout = ({children}: {children: React.ReactNode}) => {
         
         <main className='md:pl-64 pr-12 h-full mt-10 container mx-auto py-10'> 
       {children}
-      {/* <ToastProvider/> */}
+      <ToastProvider/>
         </main>
 
     </div>

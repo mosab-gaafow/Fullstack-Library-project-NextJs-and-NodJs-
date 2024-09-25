@@ -3,44 +3,43 @@ import jwt from 'jsonwebtoken';
 import { Jwt_Secret, prisma } from '../config/config.js';
 
 
-export const registerUser = async (req,res) => {
-
-    try{
-        
-        const {fullname, phone, email, password, role, bookLoan} = req.body;
-
-        const isUserExists = await prisma.user.findFirst({where: {
-            fullname: fullname.toLowerCase(),
-            phone,
-            email: email.toLowerCase()
-        }});
-
-        if(isUserExists) {
-            return res.status(400).send("Already Exists")
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newUser = await prisma.user.create({
-            data: {
-                fullname,
-                phone,
-                email,
-                password : hashedPassword,
-                role,
-                bookLoan 
-            }
-        });
-
-        return res.status(200).send(newUser);
-
-
-    }catch(e) {
-        console.log("error on registering user", e)
-        return res.status(400).send(e.message)
+export const registerUser = async (req, res) => {
+    // console.log('Request received:', req.body); // Log request body for inspection
+    try {
+      const { fullname, phone, email, password, role, bookLoan } = req.body;
+  
+      const isUserExists = await prisma.user.findFirst({
+        where: {
+          fullname: fullname.toLowerCase(),
+          phone : phone.toLowerCase(),
+          email: email.toLowerCase(),
+        },
+      });
+  
+      if (isUserExists) {
+        return res.status(400).send('User Already Exists');
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const newUser = await prisma.user.create({
+        data: {
+          fullname,
+          phone: phone.toString(),
+          email,
+          password: hashedPassword,
+          role,
+          bookLoan,
+        },
+      });
+  
+      return res.status(200).send(newUser);
+    } catch (e) {
+      console.error('Error registering user:', e);
+      return res.status(400).send(e.message);
     }
-
-}
+  };
+  
 
 export const loginUser = async (req, res) => {
 
@@ -68,10 +67,12 @@ export const loginUser = async (req, res) => {
         });
 
         res.status(200).send({
+            // token,
             message: {
                 _id: isUserExists._id,
                 email: isUserExists.email,
-                password: isUserExists.password
+                password: isUserExists.password,
+                
             }
         });
 
@@ -92,6 +93,24 @@ export const getAllUsers = async(req, res) => {
         }
 
         return res.status(201).send(users);
+
+    }catch(e) {
+        console.log("error", e);
+        return res.status(400).send(e.message)
+    } 
+
+}
+
+export const getUserById = async(req, res) => {
+
+    try{
+
+        const user = await prisma.user.findUnique({where: {id: parseInt(req.params.id)}});
+        if(!user){
+            return res.status(400).send("No User Found with this id");
+        }
+
+        return res.status(201).send(user);
 
     }catch(e) {
         console.log("error", e);
@@ -144,9 +163,11 @@ export const deleteUser = async (req, res) => {
 
         const delUser = await prisma.user.delete({where: {id: parseInt(req.params.id)}});
 
-        return res.status(400).send("User Deleted Successfully.");
+        return res.status(200).send("User Deleted Successfully.");
 
     }catch(e) {
+        console.log("error in deleting user",e);
+        return res.status(400).send(e.message);
 
     }
 

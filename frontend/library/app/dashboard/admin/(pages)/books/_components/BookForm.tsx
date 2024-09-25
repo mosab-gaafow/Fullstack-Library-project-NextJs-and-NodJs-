@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -54,11 +54,11 @@ const BookForm = ({book}: {book?: Book}) => {
 
 
   const form = useForm<z.infer<typeof bookValidationSchema>>({
-    
+    resolver: zodResolver(bookValidationSchema),
     defaultValues: {
       title: book?.title, // haduu jiro waa update-ka
       author: book?.author, 
-      isbn: book?.title, 
+      isbn: book?.isbn, 
       publisherYear: book?.publisherYear, 
       stockCount: book?.stockCount,
     },
@@ -68,10 +68,11 @@ const BookForm = ({book}: {book?: Book}) => {
     // setLoading(true);
     try{
         if(book) {
-            await axios.patch(`${API}/admin/books/update-books${book.id}`, values)
+            await axios.patch(`${API}/books/update-books/${book.id}`, values)
+            
 
         }else{
-            await axios.post(`${API}/admin/books/register-book`, values);
+            await axios.post(`${API}/books/register-book`, values);
         }
 
         
@@ -106,9 +107,9 @@ const BookForm = ({book}: {book?: Book}) => {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Book Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter category name" {...field} />
+                    <Input placeholder="Enter Book name" {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -120,9 +121,9 @@ const BookForm = ({book}: {book?: Book}) => {
               name="author"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Author</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter category name" {...field} />
+                    <Input placeholder="Enter author name" {...field} />
                   </FormControl>
 
                   <FormMessage />
@@ -134,9 +135,11 @@ const BookForm = ({book}: {book?: Book}) => {
               name="isbn"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>ISBN</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter category name" {...field} />
+                    <Input placeholder="Enter isbn number" {...field}
+                    
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -148,9 +151,14 @@ const BookForm = ({book}: {book?: Book}) => {
               name="publisherYear"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Published year</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter category name" {...field} />
+                    <Input placeholder="Enter publisher year" {...field} 
+                   value={field.value}
+                   onChange={(e) =>
+                     field.onChange(parseInt(e.target.value) || 0)
+                   }
+                    />
                   </FormControl>
 
                   <FormMessage />
@@ -162,10 +170,26 @@ const BookForm = ({book}: {book?: Book}) => {
               name="stockCount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Quantity</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter category name" {...field} />
+                    <Input placeholder="Enter stock quantity" {...field}
+                     value={field.value}
+                     onChange={(e) =>
+                       field.onChange(parseFloat(e.target.value) || 0)
+                     }
+                    />
+                    
                   </FormControl>
+                  {/* <FormControl>
+                      <Input
+                        placeholder="Enter Book stockquantity"
+                        {...field}
+                        value={field.value}
+                        onChange={(e) =>
+                          field.onChange(parseFloat(e.target.value) || 0)
+                        }
+                      /> */}
+                    {/* </FormControl> */}
 
                   <FormMessage />
                 </FormItem>

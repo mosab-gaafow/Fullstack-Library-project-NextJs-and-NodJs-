@@ -6,87 +6,87 @@ import { useRouter } from "next/navigation"
 // import { AlertDialogBox } from "./_components/AlertDialog"
 import { ArrowUpDown } from "lucide-react"
 import { AlertDialogBox } from "./_components/AlertDialogBox"
-export type Book = {
+export type User = {
     id: string
-    title: string
-    author: string
-    isbn: string,
-    publisherYear: number,
-    stockCount: number
+    fullname: string
+    phone: string
+    email: string,
+    password: string,
+    role: string
     createdAt: string
 }
 
 
-export const columns: ColumnDef<Book>[] = [
+export const columns: ColumnDef<User>[] = [
     {
       accessorKey: "id",
       header: "ID",
     },
     {
-      accessorKey: "title",
+      accessorKey: "fullname",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Book Name
+            Fullname
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
     },
     {
-      accessorKey: "author",
+      accessorKey: "phone",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Author
+            Phone
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
     },
     {
-      accessorKey: "isbn",
+      accessorKey: "email",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Isbn
+            Email
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
     },
+    // {
+    //   accessorKey: "password",
+    //   header: ({ column }) => {
+    //     return (
+    //       <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //       >
+    //         Password
+    //         <ArrowUpDown className="ml-2 h-4 w-4" />
+    //       </Button>
+    //     )
+    //   },
+    // },
     {
-      accessorKey: "publisherYear",
+      accessorKey: "role",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            publisherYear
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
-    },
-    {
-      accessorKey: "stockCount",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            StockCount
+            Role
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
@@ -110,7 +110,7 @@ export const columns: ColumnDef<Book>[] = [
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const nookInfo = row.original
+        const userInfo = row.original
         
         const router = useRouter();
 
@@ -118,11 +118,11 @@ export const columns: ColumnDef<Book>[] = [
           <div className="space-x-2">
          {/* <button className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded"> */}
          <Button className="bg-white hover:bg-gray-100 text-black font-medium py-2 px-4 border border-gray-300 rounded shadow-sm"
-         onClick={() => router.push(`/dashboard/admin/books/${nookInfo.id}`)}
+         onClick={() => router.push(`/dashboard/admin/users/${userInfo.id}`)}
          >
           Update
           </Button>
-          <AlertDialogBox id={nookInfo.id.toString()}/>
+          <AlertDialogBox id={userInfo.id.toString()}/>
 
           </div>
         )

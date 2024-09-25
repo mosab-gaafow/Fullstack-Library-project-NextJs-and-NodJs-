@@ -50,6 +50,23 @@ export const getAllBooks = async (req, res) => {
     }
 
 }
+export const getBookById = async (req, res) => {
+
+    try{
+
+        const books = await prisma.book.findUnique({where: {id: parseInt(req.params.id)}});
+        if(!books) {
+            return res.status(400).send("No Books Found");
+        }
+        return res.status(200).send(books);
+        
+
+    }catch(e) {
+        console.log("error at getting book", e);
+        return res.status(400).send(e.message)
+    }
+
+}
 
 export const updateBooks = async (req, res) => {
 
@@ -99,6 +116,6 @@ export const deleteBook = async (req, res) => {
 
     const delBk = await prisma.book.delete({where: {id: parseInt(req.params.id)}});
 
-    return res.status(400).send("Deleted Successfully.")
+    return res.status(200).send("Deleted Successfully.")
 
 }

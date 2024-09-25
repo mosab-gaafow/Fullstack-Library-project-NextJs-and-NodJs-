@@ -27,10 +27,10 @@ export const AlertDialogBox = async({id}: {id: string}) => {
     const handleDelete = async() => {
         setLoading(true);
         try {
-            await axios.delete(`${API}/books/delete-books/${id}`)
-            queryClient.invalidateQueries({queryKey: ["book"]});
+            await axios.delete(`${API}/users/delete-user/${id}`)
+            queryClient.invalidateQueries({queryKey: ["user"]});
 
-            toast.success("Book Deleted Successful✅")
+            toast.success("User Deleted Successful✅")
             // router.push('/dashboard/admin/category')
             setLoading(false)
         }catch(e){
